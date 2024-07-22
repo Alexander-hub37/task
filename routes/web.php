@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::resource('tasks', TaskController::class);
+Route::post('tasks/{task}/update-status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');

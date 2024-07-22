@@ -30,9 +30,8 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-
+            'name' => 'required|string|min:3',
+            'description' => 'required|string|min:10',
         ]);
 
         Task::create($request->all());
@@ -62,9 +61,8 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:pending,completed',
+            'name' => 'required|string|min:3',
+            'description' => 'required|string|min:10',
         ]);
 
         $task->update($request->all());
@@ -81,4 +79,19 @@ class TaskController extends Controller
 
         return redirect()->route('tasks.index')->with('success', 'Task deleted.');
     }
+
+    public function updateStatus(Request $request, Task $task)
+{
+    $request->validate([
+        'status' => 'required|boolean',
+    ]);
+
+
+    $task->update([
+        'status' => $request->status,
+    ]);
+
+    return redirect()->route('tasks.index')->with('success', 'Task status updated.');
+}
+
 }
